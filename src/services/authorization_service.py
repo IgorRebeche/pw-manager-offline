@@ -1,3 +1,4 @@
+import ctypes
 from src.domain.encryptor_configuration import EncryptorConfiguration
 from src.domain.authorization_state import AuthorizationState
 from src.repositories.encryptor_configuration_repository import EncryptorConfigurationRepository
@@ -39,6 +40,21 @@ class AuthorizationService:
         
         return False
         
+    def clean_memory(self):
+        self.secure_delete_object(self.authorization_state)
+      
+    def secure_delete_object(self, obj):
+        """
+        Securely delete the contents of an object from memory by overwriting its attributes.
+        """
+        # Iterate over object attributes
+        for attr_name in dir(obj):
+            # Check if attribute is not a method or special attribute
+            if not attr_name.startswith('__') and not callable(getattr(obj, attr_name)):
+                # Overwrite attribute with None
+                setattr(obj, attr_name, None)
+        # Delete the object
+        del obj 
         
     def __validate_master_password(self, password):
         encrypted_password = self.encryptor_service.create_256_bit_hash(password)

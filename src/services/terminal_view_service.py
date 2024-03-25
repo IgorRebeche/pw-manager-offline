@@ -24,7 +24,7 @@ class TerminalViewService:
         
         print("You can start typing /help")
         while True:
-            command_input = input("Digite um comando: ")
+            command_input = input("[pw-manager]: ")
             
             if command_input.startswith('/'):
                 parts = command_input.split()
